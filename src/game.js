@@ -12,7 +12,7 @@ class Game {
 
     __reset() {
         let restarts = this.__bumble.gameState.getState('restarts');
-        if (!restarts) {
+        if (restarts == null) {
             restarts = 0;
         } else {
             restarts += 1;
