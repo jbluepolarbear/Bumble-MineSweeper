@@ -2,6 +2,4 @@
 
 Simple Mine Sweeper game made in [Bumble](https://github.com/jbluepolarbear/Bumble)
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/jbluepolarbear/Bumble-MineSweeper/master/screenshot.png"/>
-</p>
+[![MineSweeper](https://raw.githubusercontent.com/jbluepolarbear/Bumble-MineSweeper/master/screenshot.png)](https://www.jeremyiscool.com/Bumble-MineSweeper/index.html)
