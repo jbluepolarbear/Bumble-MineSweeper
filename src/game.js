@@ -5,9 +5,27 @@ class Game {
         this.__numberOfBombs = Math.min(numberOfBombs, Math.floor(0.85 * this.__width * this.__height));
         this.__squareSize = squareSize;
         this.__bumble = new Bumble('mine sweeper', this.__width * squareSize, this.__height * squareSize + squareSize, BumbleColor.fromRGB(128, 128, 128), 60);
+        this.__bumble.loaderBackgroundColor = 'blue';
+        this.__bumble.loaderProgressBackgroundColor = 'grey';
+        this.__bumble.loaderProgressColor = 'black';
         this.__reset();
         this.__bumble.runCoroutine(this.init.bind(this));
         this.__images = {};
+        this.__bumble.preloader.loadAll([
+            new BumbleResource('1', 'img/1.png', 'image'),
+            new BumbleResource('2', 'img/2.png', 'image'),
+            new BumbleResource('3', 'img/3.png', 'image'),
+            new BumbleResource('4', 'img/4.png', 'image'),
+            new BumbleResource('5', 'img/5.png', 'image'),
+            new BumbleResource('6', 'img/6.png', 'image'),
+            new BumbleResource('7', 'img/7.png', 'image'),
+            new BumbleResource('8', 'img/8.png', 'image'),
+            new BumbleResource('blank', 'img/blank.png', 'image'),
+            new BumbleResource('empty', 'img/empty.png', 'image'),
+            new BumbleResource('bomb', 'img/bomb.png', 'image'),
+            new BumbleResource('flag', 'img/flag.png', 'image'),
+            new BumbleResource('smile', 'img/smile.jpg', 'image')
+        ]);
     }
 
     __reset() {
@@ -136,31 +154,31 @@ class Game {
     }
 
     *init() {
-        this.__images['1'] = yield this.__bumble.getImage('img/1.png');
+        this.__images['1'] = this.__bumble.getImage('1');
         this.__images['1'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['2'] = yield this.__bumble.getImage('img/2.png');
+        this.__images['2'] = this.__bumble.getImage('2');
         this.__images['2'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['3'] = yield this.__bumble.getImage('img/3.png');
+        this.__images['3'] = this.__bumble.getImage('3');
         this.__images['3'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['4'] = yield this.__bumble.getImage('img/4.png');
+        this.__images['4'] = this.__bumble.getImage('4');
         this.__images['4'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['5'] = yield this.__bumble.getImage('img/5.png');
+        this.__images['5'] = this.__bumble.getImage('5');
         this.__images['5'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['6'] = yield this.__bumble.getImage('img/6.png');
+        this.__images['6'] = this.__bumble.getImage('6');
         this.__images['6'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['7'] = yield this.__bumble.getImage('img/7.png');
+        this.__images['7'] = this.__bumble.getImage('7');
         this.__images['7'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['8'] = yield this.__bumble.getImage('img/8.png');
+        this.__images['8'] = this.__bumble.getImage('8');
         this.__images['8'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['empty'] = yield this.__bumble.getImage('img/empty.png');
+        this.__images['empty'] = this.__bumble.getImage('empty');
         this.__images['empty'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['blank'] = yield this.__bumble.getImage('img/blank.png');
+        this.__images['blank'] = this.__bumble.getImage('blank');
         this.__images['blank'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['flag'] = yield this.__bumble.getImage('img/flag.png');
+        this.__images['flag'] = this.__bumble.getImage('flag');
         this.__images['flag'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['bomb'] = yield this.__bumble.getImage('img/bomb.png');
+        this.__images['bomb'] = this.__bumble.getImage('bomb');
         this.__images['bomb'].setSize(this.__squareSize, this.__squareSize);
-        this.__images['smile'] = yield this.__bumble.getImage('img/smile.jpg');
+        this.__images['smile'] = this.__bumble.getImage('smile');
         this.__images['smile'].setSize(this.__squareSize, this.__squareSize);
         this.__bumble.runCoroutine(this.update.bind(this));
         this.__bumble.runCoroutine(this.render.bind(this));
