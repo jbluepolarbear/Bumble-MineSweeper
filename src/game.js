@@ -24,7 +24,10 @@ class Game {
             new BumbleResource('empty', 'img/empty.png', 'image'),
             new BumbleResource('bomb', 'img/bomb.png', 'image'),
             new BumbleResource('flag', 'img/flag.png', 'image'),
-            new BumbleResource('smile', 'img/smile.jpg', 'image')
+            new BumbleResource('smile', 'img/smile.jpg', 'image'),
+            new BumbleResource('ambient', 'audio/PM_CS_ambiance_1.wav', 'audio'),
+            new BumbleResource('clicked', 'audio/PM_CS_click_glassy.wav', 'audio'),
+            new BumbleResource('failed', 'audio/PM_CS_close_complex.wav', 'audio')
         ]);
     }
 
@@ -180,6 +183,11 @@ class Game {
         this.__images['bomb'].setSize(this.__squareSize, this.__squareSize);
         this.__images['smile'] = this.__bumble.getImage('smile');
         this.__images['smile'].setSize(this.__squareSize, this.__squareSize);
+        this.__ambientSound = this.__bumble.getAudio('ambient');
+        this.__ambientSound.play();
+        this.__ambientSound.loop = true;
+        this.__clickedSound = this.__bumble.getAudio('clicked');
+        this.__failedSound = this.__bumble.getAudio('failed');
         this.__bumble.runCoroutine(this.update.bind(this));
         this.__bumble.runCoroutine(this.render.bind(this));
         this.__bumble.runCoroutine(function *() {
@@ -197,6 +205,9 @@ class Game {
     *update() {
         while (this.__running) {
             const clicked = this.__mouseReleased(0);
+            if (clicked) {
+                this.__clickedSound.play();
+            }
             if (this.__playing) {
                 if (clicked) {
                     const clickPos = this.__bumble.mouse.mouseState.position;
@@ -212,6 +223,7 @@ class Game {
                             if (!mapItem.flagged && !mapItem.visited) {
                                 if (mapItem.bomb) {
                                     this.__playing = false;
+                                    this.__failedSound.play();
                                 } else {
                                     this.__clearMap(gridPos);
                                 }
