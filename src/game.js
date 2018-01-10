@@ -25,9 +25,9 @@ class Game {
             new BumbleResource('bomb', 'img/bomb.png', 'image'),
             new BumbleResource('flag', 'img/flag.png', 'image'),
             new BumbleResource('smile', 'img/smile.jpg', 'image'),
-            new BumbleResource('ambient', 'audio/PM_CS_ambiance_1.wav', 'audio'),
-            new BumbleResource('clicked', 'audio/PM_CS_click_glassy.wav', 'audio'),
-            new BumbleResource('failed', 'audio/PM_CS_close_complex.wav', 'audio')
+            new BumbleResource('ambient', 'audio/PM_CS_ambiance_1.mp3', 'audio'),
+            new BumbleResource('clicked', 'audio/PM_CS_click_glassy.mp3', 'audio'),
+            new BumbleResource('failed', 'audio/PM_CS_close_complex.mp3', 'audio')
         ]);
     }
 
