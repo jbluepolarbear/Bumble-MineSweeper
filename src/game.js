@@ -158,31 +158,21 @@ class Game {
 
     *init() {
         this.__images['1'] = this.__bumble.getImage('1');
-        this.__images['1'].setSize(this.__squareSize, this.__squareSize);
         this.__images['2'] = this.__bumble.getImage('2');
-        this.__images['2'].setSize(this.__squareSize, this.__squareSize);
         this.__images['3'] = this.__bumble.getImage('3');
-        this.__images['3'].setSize(this.__squareSize, this.__squareSize);
         this.__images['4'] = this.__bumble.getImage('4');
-        this.__images['4'].setSize(this.__squareSize, this.__squareSize);
         this.__images['5'] = this.__bumble.getImage('5');
-        this.__images['5'].setSize(this.__squareSize, this.__squareSize);
         this.__images['6'] = this.__bumble.getImage('6');
-        this.__images['6'].setSize(this.__squareSize, this.__squareSize);
         this.__images['7'] = this.__bumble.getImage('7');
-        this.__images['7'].setSize(this.__squareSize, this.__squareSize);
         this.__images['8'] = this.__bumble.getImage('8');
-        this.__images['8'].setSize(this.__squareSize, this.__squareSize);
         this.__images['empty'] = this.__bumble.getImage('empty');
-        this.__images['empty'].setSize(this.__squareSize, this.__squareSize);
         this.__images['blank'] = this.__bumble.getImage('blank');
-        this.__images['blank'].setSize(this.__squareSize, this.__squareSize);
         this.__images['flag'] = this.__bumble.getImage('flag');
-        this.__images['flag'].setSize(this.__squareSize, this.__squareSize);
         this.__images['bomb'] = this.__bumble.getImage('bomb');
-        this.__images['bomb'].setSize(this.__squareSize, this.__squareSize);
         this.__images['smile'] = this.__bumble.getImage('smile');
-        this.__images['smile'].setSize(this.__squareSize, this.__squareSize);
+        this.__imageTransform = new BumbleTransformation(this.__images['1'].width, this.__images['1'].height);
+        this.__imageTransform.scale = new BumbleVector(this.__squareSize / this.__imageTransform.width, this.__squareSize / this.__imageTransform.height);
+        //this.__imageTransform.anchor = new BumbleVector(this.__squareSize / 2, this.__squareSize / 2);
         this.__ambientSound = this.__bumble.getAudio('ambient');
         this.__ambientSound.play();
         this.__ambientSound.loop = true;
@@ -276,59 +266,57 @@ class Game {
     }
 
     __drawTime() {
-        this.__bumble.context.save();
+        this.__bumble.context.setTransform(1, 0, 0, 1, 0, 0);
         this.__bumble.context.fillStyle = BumbleColor.fromRGBA(0, 0, 0, 0.5);
         this.__bumble.context.fillRect(this.__bumble.width - 40, 2, 38, this.__squareSize - 4);
         this.__bumble.context.fillStyle = BumbleColor.fromRGB(255, 255, 255);
         this.__bumble.context.font = "15px Arial";
         this.__bumble.context.textAlign = "center";
         this.__bumble.context.fillText(this.__timeTaken.toString().padStart(3, 0), this.__bumble.width - 19, this.__squareSize - 5, 36);
-        this.__bumble.context.restore();
     }
 
     __drawFlagsRemaining() {
-        this.__bumble.context.save();
+        this.__bumble.context.setTransform(1, 0, 0, 1, 0, 0);
         this.__bumble.context.fillStyle = BumbleColor.fromRGBA(0, 0, 0, 0.5);
         this.__bumble.context.fillRect(2, 2, 38, this.__squareSize - 4);
         this.__bumble.context.fillStyle = BumbleColor.fromRGB(255, 255, 255);
         this.__bumble.context.font = "15px Arial";
         this.__bumble.context.textAlign = "center";
         this.__bumble.context.fillText((this.__numberOfBombs - this.__flagsPlaced).toString().padStart(3, 0), 19, this.__squareSize - 5, 36);
-        this.__bumble.context.restore();
     }
 
     __drawLose() {
-        this.__bumble.context.save();
+        this.__bumble.context.setTransform(1, 0, 0, 1, 0, 0);
         this.__bumble.context.fillStyle = BumbleColor.fromRGBA(0, 0, 0, 0.5);
         this.__bumble.context.fillRect(this.__bumble.width * 0.15, this.__bumble.height * 0.15, this.__bumble.width * 0.7, this.__bumble.height * 0.7);
         this.__bumble.context.fillStyle = BumbleColor.fromRGB(255, 255, 255);
         this.__bumble.context.font = "60px Arial";
         this.__bumble.context.textAlign = "center";
         this.__bumble.context.fillText('You Lose', this.__bumble.width / 2.0, this.__bumble.height / 2.0, this.__bumble.width * 0.85);
-        this.__bumble.context.restore();
     }
 
     __drawWin() {
-        this.__bumble.context.save();
+        this.__bumble.context.setTransform(1, 0, 0, 1, 0, 0);
         this.__bumble.context.fillStyle = BumbleColor.fromRGBA(0, 0, 0, 0.5);
         this.__bumble.context.fillRect(this.__bumble.width * 0.15, this.__bumble.height * 0.15, this.__bumble.width * 0.7, this.__bumble.height * 0.7);
         this.__bumble.context.fillStyle = BumbleColor.fromRGB(255, 255, 255);
         this.__bumble.context.font = "60px Arial";
         this.__bumble.context.textAlign = "center";
         this.__bumble.context.fillText('You Win', this.__bumble.width / 2.0, this.__bumble.height / 2.0, this.__bumble.width * 0.85);
-        this.__bumble.context.restore();
     }
 
     *render() {
         while (this.__running) {
             this.__bumble.clearScreen();
             const smileImage = this.__images['smile'];
-            smileImage.position = new BumbleVector(this.__bumble.width / 2.0, this.__squareSize / 2.0);
+            this.__imageTransform.position = new BumbleVector(this.__bumble.width / 2.0, this.__squareSize / 2.0);
+            this.__bumble.applyTransformation(this.__imageTransform.build());
             smileImage.draw();
             for (let x = 0; x < this.__map.length; ++x) {
                 for (let y = 0; y < this.__map[x].length; ++y) {
                     const image = this.__getImage(this.__map[x][y], !this.__playing && !this.__wonGame);
-                    image.position = this.__grid.gridToWorld(x, y);
+                    this.__imageTransform.position = this.__grid.gridToWorld(x, y);
+                    this.__bumble.applyTransformation(this.__imageTransform.build());
                     image.draw();
                 }
             }
